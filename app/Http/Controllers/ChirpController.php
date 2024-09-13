@@ -15,8 +15,9 @@ class ChirpController extends Controller
      */
     public function index(): Response
     {
+      $data = Chirp::with('user:id,name')->latest()->get();
         return Inertia::render('Chirps/Index', [
-            //
+            'chirps' => $data
         ]);
     }
 
