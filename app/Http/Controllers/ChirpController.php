@@ -16,9 +16,10 @@ class ChirpController extends Controller
      */
     public function index(): Response
     {
-      $data = Chirp::with('user:id,name')->latest()->get();
+        $data = Chirp::with('user:id,name')->latest()->get();
+
         return Inertia::render('Chirps/Index', [
-            'chirps' => $data
+            'chirps' => $data,
         ]);
     }
 
@@ -35,13 +36,13 @@ class ChirpController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-      $validated = $request->validate([
-        'message' => 'required|string|max:255'
-      ]);
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
 
-      $request->user()->chirps()->create($validated);
+        $request->user()->chirps()->create($validated);
 
-      return redirect(route('chirps.index'));
+        return redirect(route('chirps.index'));
     }
 
     /**
@@ -65,15 +66,15 @@ class ChirpController extends Controller
      */
     public function update(Request $request, Chirp $chirp): RedirectResponse
     {
-      Gate::authorize('update', $chirp);
+        Gate::authorize('update', $chirp);
 
-      $validated = $request->validate([
-        'message' => 'required|string|max:255'
-      ]);
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
 
-      $chirp->update($validated);
+        $chirp->update($validated);
 
-      return redirect(route('chirps.index'));
+        return redirect(route('chirps.index'));
     }
 
     /**
@@ -81,10 +82,10 @@ class ChirpController extends Controller
      */
     public function destroy(Chirp $chirp): RedirectResponse
     {
-      Gate::authorize('delete', $chirp);
+        Gate::authorize('delete', $chirp);
 
-      $chirp->delete();
+        $chirp->delete();
 
-      return redirect(route('chirps.index'));
+        return redirect(route('chirps.index'));
     }
 }
